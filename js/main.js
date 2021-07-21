@@ -138,7 +138,7 @@ function cellClicked(elCell, cellI, cellJ) {
         placeMines(gGame.board);
         setMinesNegsCount(gGame.board);
         renderCell(loc, currCell.minesAroundCount);
-        if (currCell.minesAroundCount === 0) expendShown(gGame.board, cellI, cellJ);
+        if (currCell.minesAroundCount === 0) expandShown(gGame.board, cellI, cellJ);
         var content = (currCell.minesAroundCount) > 0 ? currCell.minesAroundCount : EMPTY;
         renderCell(loc, content);
         // push first steps to steps (for the undo)
@@ -178,7 +178,7 @@ function cellClicked(elCell, cellI, cellJ) {
         gGame.shownCount++;
         console.log(gGame.shownCount, gLevel.SIZE * gLevel.SIZE);
         // reveal negs and count
-        expendShown(gGame.board, cellI, cellJ);
+        expandShown(gGame.board, cellI, cellJ);
     }
     // push current steps to steps (for the undo)
     gGame.steps.push({
@@ -351,22 +351,22 @@ function onUndo() {
     }
 }
 
-function expendShown(board, cellI, cellJ) {
+function expandShown(board, cellI, cellJ) {
     // get negs
     var currCellNegsLoc = getNeighbors(cellI, cellJ);
     // loop over all negs
     for (var i = 0; i < currCellNegsLoc.length; i++) {
         var currCellLoc = currCellNegsLoc[i];
-        var currCell = gGame.board[currCellLoc.i][currCellLoc.j];
+        var currCell = board[currCellLoc.i][currCellLoc.j];
         var content = currCell.minesAroundCount ? currCell.minesAroundCount : EMPTY;
         // skip shown, marked & mines
         if (currCell.isShown || currCell.isMarked || currCell.isMine) continue;
         currCell.isShown = true;
         gGame.shownCount++;
-        console.log(gGame.shownCount, gLevel.SIZE * gLevel.SIZE);
         document.querySelector(`.cell-${currCellLoc.i}-${currCellLoc.j}`).classList.add('shown');
         renderCell(currCellLoc, content);
-        if(currCell.minesAroundCount === 0) expendShown(gGame.board, currCellLoc.i, currCellLoc.j);
+        // recursive expand show
+        if(currCell.minesAroundCount === 0) expandShown(board, currCellLoc.i, currCellLoc.j);
     }
 }
 
