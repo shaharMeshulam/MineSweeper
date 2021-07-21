@@ -109,7 +109,7 @@ function setMinesNegsCount(board) {
         for (var j = 0; j < gLevel.SIZE; j++) {
             if (board[i][j].isMine) continue;
             var minesAroundCount = 0;
-            var neighborsLoc = getNeighbors(board, i, j);
+            var neighborsLoc = getNeighbors(i, j);
             for (var n = 0; n < neighborsLoc.length; n++) {
                 if (board[neighborsLoc[n].i][neighborsLoc[n].j].isMine) minesAroundCount++;
             }
@@ -353,7 +353,7 @@ function onUndo() {
 
 function expendShown(board, cellI, cellJ) {
     // get negs
-    var currCellNegsLoc = getNeighbors(board, cellI, cellJ);
+    var currCellNegsLoc = getNeighbors(cellI, cellJ);
     // loop over all negs
     for (var i = 0; i < currCellNegsLoc.length; i++) {
         var currCellLoc = currCellNegsLoc[i];
@@ -366,6 +366,7 @@ function expendShown(board, cellI, cellJ) {
         console.log(gGame.shownCount, gLevel.SIZE * gLevel.SIZE);
         document.querySelector(`.cell-${currCellLoc.i}-${currCellLoc.j}`).classList.add('shown');
         renderCell(currCellLoc, content);
+        if(currCell.minesAroundCount === 0) expendShown(gGame.board, currCellLoc.i, currCellLoc.j);
     }
 }
 

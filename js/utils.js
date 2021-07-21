@@ -20,9 +20,9 @@ function renderBoard(mat, selector) {
       var className = `cell cell-${i}-${j}`;
       className += cell.isShown ? ' shown' : '';
       var content = '';
-      if (cell.isMine && cell.isShown) { //&& cell.isShown
+      if (cell.isMine) { //&& cell.isShown
         content = MINE;
-      } else if (cell.minesAroundCount > 0 && cell.isShown) { //&& cell.isShown
+      } else if (cell.minesAroundCount > 0) { //&& cell.isShown
         content = cell.minesAroundCount;
       }
       strHTML += `\t<td class="${className}" onclick="cellClicked(this, ${i}, ${j})" oncontextmenu="cellMarked(event, ${i}, ${j})">${content}</td>\n`;
@@ -49,14 +49,12 @@ function createCell(minesAroundCount = 0, isMine = false) {
   }
 }
 
-function getNeighbors(board, cellI, cellJ) {
+function getNeighbors(cellI, cellJ) {
   var neighbors = [];
   for (var i = cellI - 1; i <= cellI + 1; i++) {
     if (i < 0 || i > gLevel.SIZE - 1) continue;
     for (var j = cellJ - 1; j <= cellJ + 1; j++) {
       if (j < 0 || j > gLevel.SIZE - 1) continue;
-      var currCell = board[i][j];
-      // if (currCell.isMarked) continue
       neighbors.push({ i, j });
     }
   }
@@ -89,7 +87,7 @@ function getRandomColor() {
 function getRandomEmptyCellLoc(board) {
   var emptyCellsLoc = getEmptyCells(board);
   var randIdx = getRandomIntInt(0, emptyCellsLoc.length);
-  var randEmptyCellLoc = emptyCellsLoc[randIdx];//emptyCellsLoc.length > 0 ? emptyCellsLoc[randIdx] : null;
+  var randEmptyCellLoc = emptyCellsLoc[randIdx];
   return randEmptyCellLoc;
 }
 
