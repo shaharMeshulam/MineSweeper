@@ -14,6 +14,13 @@ table {
     margin: auto;
 }
 
+footer {
+    position: fixed;
+    bottom: 0;
+    margin-top: 25px;
+    padding: 15px;
+}
+
 .container {
     position: relative;
 }
@@ -63,16 +70,16 @@ table {
     margin-top: 15px;
 }
 
-/* td img {
-    width: 100%;
-} */
-
 .modal {
     display: none;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    border-radius: 25px;
+    border: 5px solid black;
+    background-color: rgba(255, 255, 255, 0.698);
+    padding: 25px;
 }
 
 .hints span {
@@ -87,9 +94,3 @@ table {
     cursor: pointer;
 }
 
-footer {
-    position: fixed;
-    bottom: 0;
-    margin-top: 25px;
-    padding: 15px;
-}

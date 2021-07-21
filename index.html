@@ -11,36 +11,38 @@
 
 <body onload="initGame()">
     <h1>Mine Sweeper By Shahar Meshulam</h1>
-    <div class="level">
-        <h3> Chose Your Level:</h3>
-        <input type="radio" id="level1" name="level" value="beginner" checked onclick="initGame()">
-        <label for="level1">Beginner(16)</label>
-        <input type="radio" id="level2" name="level" value="medium" onclick="initGame()">
-        <label for="level2">Medium(64)</label>
-        <input type="radio" id="level3" name="level" value="expert" onclick="initGame()">
-        <label for="level3">Expert(144)</label>
-    </div>
-    <div class="info">
-        <div>
-            <div class="lives">Life: <span>💖💖💗</span></div>
-            <div class="hints">Hints: <span onclick="onHintsClick(this)">💡💡💡</span></div>
-            <div class="timer">Time : <span class="value">00.00</span></div>
-        </div>
-        <div class="buttons">
-            <button class="safe-click" onclick="onSafeClick()">Safe Click (<span>3</span> available)</button>
-            <button class="undo" onclick="onUndo()">&lt;-- UNDO</button>
-        </div>
-    </div>
     <div class="container">
-        <div class="smiley" onclick="initGame()">😀</div>
         <div class="modal">
             <h2>Game Over You <span></span></h2>
             <button onclick="initGame()">restart</button>
         </div>
-        <table border="1" cellpadding="10">
-            <tbody class="board"></tbody>
-        </table>
+        <div class="level">
+            <h3> Chose Your Level:</h3>
+            <input type="radio" id="level1" name="level" value="beginner" checked onclick="initGame()">
+            <label for="level1">Beginner(16)</label>
+            <input type="radio" id="level2" name="level" value="medium" onclick="initGame()">
+            <label for="level2">Medium(64)</label>
+            <input type="radio" id="level3" name="level" value="expert" onclick="initGame()">
+            <label for="level3">Expert(144)</label>
+        </div>
+        <div class="info">
+            <div>
+                <div class="lives">Life: <span>💖💖💗</span></div>
+                <div class="hints">Hints: <span onclick="onHintsClick(this)">💡💡💡</span></div>
+                <div class="timer">Time : <span class="value">00.00</span></div>
+            </div>
+            <div class="buttons">
+                <button class="safe-click" onclick="onSafeClick()">Safe Click (<span>3</span> available)</button>
+                <button class="undo" onclick="onUndo()">&lt;-- UNDO</button>
+            </div>
+        </div>
     </div>
+    <!-- <div class="container"> -->
+    <div class="smiley" onclick="initGame()">😀</div>
+    <table border="1" cellpadding="10">
+        <tbody class="board"></tbody>
+    </table>
+    <!-- </div> -->
     <table class="score-board-table">
         <tbody class="score-board"></tbody>
     </table>
