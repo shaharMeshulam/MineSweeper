@@ -142,12 +142,7 @@ function cellClicked(elCell, cellI, cellJ) {
         var content = (currCell.minesAroundCount) > 0 ? currCell.minesAroundCount : EMPTY;
         renderCell(loc, content);
         // push first steps to steps (for the undo)
-        gGame.steps.push({
-            board: JSON.parse(JSON.stringify(gGame.board)),
-            shownCount: gGame.shownCount,
-            markedCount: gGame.markedCount,
-            lives: gGame.lives
-        });
+        addStepToUndo();
         return;
     }
     // if in hint mode
@@ -181,12 +176,7 @@ function cellClicked(elCell, cellI, cellJ) {
         expandShown(gGame.board, cellI, cellJ);
     }
     // push current steps to steps (for the undo)
-    gGame.steps.push({
-        board: JSON.parse(JSON.stringify(gGame.board)),
-        shownCount: gGame.shownCount,
-        markedCount: gGame.markedCount,
-        lives: gGame.lives
-    });
+    addStepToUndo();
     checkGameOver();
 }
 
@@ -205,12 +195,7 @@ function cellMarked(ev, cellI, cellJ) {
         renderCell(loc, MARK)
     }
     // push current step (for the undo)
-    gGame.steps.push({
-        board: JSON.parse(JSON.stringify(gGame.board)),
-        shownCount: gGame.shownCount,
-        markedCount: gGame.markedCount,
-        lives: gGame.lives
-    });
+    addStepToUndo()
     checkGameOver();
 }
 
@@ -272,6 +257,15 @@ function updateScoreBoard() {
 
     localStorage.setItem('scores', JSON.stringify(scores));
     renderScoreBoard(scores);
+}
+
+function addStepToUndo() {
+    gGame.steps.push({
+        board: JSON.parse(JSON.stringify(gGame.board)),
+        shownCount: gGame.shownCount,
+        markedCount: gGame.markedCount,
+        lives: gGame.lives
+    });
 }
 
 function renderScoreBoard(scores) {
@@ -366,7 +360,7 @@ function expandShown(board, cellI, cellJ) {
         document.querySelector(`.cell-${currCellLoc.i}-${currCellLoc.j}`).classList.add('shown');
         renderCell(currCellLoc, content);
         // recursive expand show
-        if(currCell.minesAroundCount === 0) expandShown(board, currCellLoc.i, currCellLoc.j);
+        if (currCell.minesAroundCount === 0) expandShown(board, currCellLoc.i, currCellLoc.j);
     }
 }
 
