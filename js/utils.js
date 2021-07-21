@@ -12,9 +12,9 @@ function getMat(size) {
 }
 
 function renderBoard(mat, selector) {
-  var strHTML = '<table border="0"><tbody>';
+  var strHTML = '';
   for (var i = 0; i < mat.length; i++) {
-    strHTML += '<tr>';
+    strHTML += '<tr>\n';
     for (var j = 0; j < mat[0].length; j++) {
       var cell = mat[i][j];
       var className = `cell cell-${i}-${j}`;
@@ -25,11 +25,10 @@ function renderBoard(mat, selector) {
       } else if (cell.minesAroundCount > 0 && cell.isShown) { //&& cell.isShown
         content = cell.minesAroundCount;
       }
-      strHTML += `<td class="${className}" onclick="cellClicked(this, ${i}, ${j})" oncontextmenu="cellMarked(event, ${i}, ${j})">${content}</td>`;
+      strHTML += `\t<td class="${className}" onclick="cellClicked(this, ${i}, ${j})" oncontextmenu="cellMarked(event, ${i}, ${j})">${content}</td>\n`;
     }
-    strHTML += '</tr>'
+    strHTML += '\n</tr>'
   }
-  strHTML += '</tbody></table>';
   var elContainer = document.querySelector(selector);
   elContainer.innerHTML = strHTML;
 }

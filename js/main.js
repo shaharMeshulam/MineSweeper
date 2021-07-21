@@ -138,14 +138,16 @@ function cellClicked(elCell, cellI, cellJ) {
         placeMines(gGame.board);
         setMinesNegsCount(gGame.board);
         renderCell(loc, currCell.minesAroundCount);
-        if (currCell.minesAroundCount === 0) {
-            expendShown(gGame.board, cellI, cellJ);
-            renderCell(loc, currCell.minesAroundCount);
-        } else {
-            renderCell(loc, EMPTY);
-        }
+        if (currCell.minesAroundCount === 0) expendShown(gGame.board, cellI, cellJ);
+        var content = (currCell.minesAroundCount) > 0 ? currCell.minesAroundCount : EMPTY;
+        renderCell(loc, content);
         // push first steps to steps (for the undo)
-        gGame.steps.push({step: gGame.board.slice(), shownCount: gGame.shownCount, markedCount: gGame.markedCount});
+        gGame.steps.push({
+            board: JSON.parse(JSON.stringify(gGame.board)),
+            shownCount: gGame.shownCount,
+            markedCount: gGame.markedCount,
+            lives: gGame.lives
+        });
         return;
     }
     // if in hint mode
@@ -179,7 +181,12 @@ function cellClicked(elCell, cellI, cellJ) {
         expendShown(gGame.board, cellI, cellJ);
     }
     // push current steps to steps (for the undo)
-    gGame.steps.push({step: gGame.board.slice(), shownCount: gGame.shownCount, markedCount: gGame.markedCount});
+    gGame.steps.push({
+        board: JSON.parse(JSON.stringify(gGame.board)),
+        shownCount: gGame.shownCount,
+        markedCount: gGame.markedCount,
+        lives: gGame.lives
+    });
     checkGameOver();
 }
 
@@ -198,7 +205,12 @@ function cellMarked(ev, cellI, cellJ) {
         renderCell(loc, MARK)
     }
     // push current step (for the undo)
-    gGame.steps.push({step: gGame.board.slice(), shownCount: gGame.shownCount, markedCount: gGame.markedCount});
+    gGame.steps.push({
+        board: JSON.parse(JSON.stringify(gGame.board)),
+        shownCount: gGame.shownCount,
+        markedCount: gGame.markedCount,
+        lives: gGame.lives
+    });
     checkGameOver();
 }
 
@@ -313,26 +325,29 @@ function unReveal() {
 }
 
 function onSafeClick() {
-    if(!gGame.isOn || gGame.safeClicks === 0) return;
+    if (!gGame.isOn || gGame.safeClicks === 0) return;
     var randSafeCellLoc = getRandomSafeCellLoc(gGame.board);
     // if the are no safe places return
-    if(!randSafeCellLoc) return;
+    if (!randSafeCellLoc) return;
     var elCell = document.querySelector(`.cell-${randSafeCellLoc.i}-${randSafeCellLoc.j}`);
     elCell.classList.add('safe');
     gGame.safeClicks--;
     document.querySelector('.safe-click span').innerText = gGame.safeClicks;
-    setTimeout(function() {
+    setTimeout(function () {
         elCell.classList.remove('safe');
     }, SAFE_TIME);
 }
 
-function onUndo(){
-    if(gGame.isOn && gGame.steps.length > 1) {
-        var lastStep = gGame.steps.pop();
-        lastStep = gGame.steps.pop();
+function onUndo() {
+    if (gGame.isOn && gGame.steps.length > 1) {
+        gGame.steps.pop();
+        var lastStep = gGame.steps[gGame.steps.length - 1];
         gGame.shownCount = lastStep.shownCount;
         gGame.markedCount = lastStep.markedCount;
-        renderBoard(lastStep.step, '.board');
+        gGame.lives = lastStep.lives;
+        gGame.board = JSON.parse(JSON.stringify(lastStep.board));
+        rederLives();
+        renderBoard(gGame.board, '.board');
     }
 }
 
