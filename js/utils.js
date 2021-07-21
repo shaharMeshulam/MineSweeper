@@ -20,9 +20,9 @@ function renderBoard(mat, selector) {
       var className = `cell cell-${i}-${j}`;
       className += cell.isShown ? ' shown' : '';
       var content = '';
-      if (cell.isMine) { //&& cell.isShown
+      if (cell.isMine && cell.isShown) { //&& cell.isShown
         content = MINE;
-      } else if (cell.minesAroundCount > 0) { //&& cell.isShown
+      } else if (cell.minesAroundCount > 0 && cell.isShown) { //&& cell.isShown
         content = cell.minesAroundCount;
       }
       strHTML += `\t<td class="${className}" onclick="cellClicked(this, ${i}, ${j})" oncontextmenu="cellMarked(event, ${i}, ${j})">${content}</td>\n`;
