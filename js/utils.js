@@ -109,7 +109,7 @@ function getEmptyCells(board) {
 }
 
 function isEmptyCell(cell) {
-  return !cell.isShown;
+  return !cell.isShown && !cell.isMine;
 }
 
 function getRandomSafeCellLoc(board) {

@@ -142,8 +142,8 @@ function cellClicked(elCell, cellI, cellJ) {
     if (gGame.isFirstMove) {
         gGame.isFirstMove = false;
         currCell.isShown = true;
-        elCell.classList.add('shown');
         gGame.shownCount++;
+        elCell.classList.add('shown');
         placeMines(gGame.board);
         setMinesNegsCount(gGame.board);
         if (currCell.minesAroundCount === 0) expandShown(gGame.board, cellI, cellJ);
