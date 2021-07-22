@@ -171,7 +171,6 @@ function cellClicked(elCell, cellI, cellJ) {
     elCell.classList.add('shown');
     if (currCell.isMine) {
         gGame.lives--;
-        //gGame.shownCount++;
         gGame.minesStepdcount++;
         elCell.classList.add('mine');
         rederLives();
