@@ -33,8 +33,7 @@ function initGame() {
         clearInterval(gGame.timeIntervalId);
         gGame.timeIntervalId = null;
     }
-    // gGame.lives = LIVES; // i define the lives here because if in easy level i do gGame.lives = 1 and in medium level gGame.lives = 2 so there will be only 2 lives
-    setGameLevel()
+    setGameLevel();
     gGame.board = getMat(gLevel.SIZE);
     gGame.isOn = false;
     gGame.shownCount = 0;
@@ -52,6 +51,7 @@ function initGame() {
     renderHints();
     renderBoard(gGame.board, '.board');
     updateScoreBoard();
+    document.querySelector('.safe-click span').innerText = gGame.safeClicks;
     document.querySelector('.place-mines span').innerText = '';
     document.querySelector('.timer span').innerText = '00.000';
     document.querySelector('.modal').style.display = 'none';
@@ -118,7 +118,7 @@ function cellClicked(elCell, cellI, cellJ) {
     var currCell = gGame.board[cellI][cellJ];
     var loc = { i: cellI, j: cellJ };
     if (gPositionMines.isPositionMines) {
-        if(currCell.isMine) return;
+        if (currCell.isMine) return;
         currCell.isMine = true;
         gPositionMines.minesLoc.push(loc);
         document.querySelector('.place-mines span').innerText = `(${gLevel.MINES - gPositionMines.minesLoc.length} left)`;
@@ -196,7 +196,7 @@ function startGame() {
 
 function cellMarked(ev, cellI, cellJ) {
     ev.preventDefault();
-    if(gGame.markedCount === gLevel.MINES) return;
+    if (gGame.markedCount === gLevel.MINES) return;
     var cellMarked = gGame.board[cellI][cellJ];
     if (!gGame.isOn || cellMarked.isShown) return;
     var loc = { i: cellI, j: cellJ };
