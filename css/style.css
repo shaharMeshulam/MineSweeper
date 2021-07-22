@@ -36,6 +36,7 @@ footer {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
     margin: 15px;
 }
 
@@ -93,6 +94,11 @@ footer {
     padding: 25px;
 }
 
+.hints, .timer, .lives {
+    font-size: 20px;
+}
+    
+
 .hints span {
     cursor: pointer;
 }
@@ -103,5 +109,7 @@ footer {
 
 .smiley {
     cursor: pointer;
+    font-size: 30px;
+    padding: 10px;
 }
 
