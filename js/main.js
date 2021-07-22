@@ -205,7 +205,7 @@ function cellMarked(ev, cellI, cellJ) {
         cellMarked.isMarked = false;
         gGame.markedCount--;
         renderCell(loc, EMPTY);
-    } else if(gGame.markedCount !== gLevel.MINES) {
+    } else if (gGame.markedCount !== gLevel.MINES) {
         gGame.markedCount++;
         cellMarked.isMarked = true;
         renderCell(loc, MARK)
@@ -219,6 +219,7 @@ function checkGameOver() {
     if (gGame.shownCount + gGame.markedCount === gLevel.SIZE * gLevel.SIZE && gGame.lives !== 0) {
         showGameOver(true);
     } else if (gGame.lives == 0) {
+        showRemainingMines();
         showGameOver();
     }
 }
@@ -232,6 +233,17 @@ function showGameOver(isWin = false) {
     document.querySelector('.modal').style.display = 'block';
     document.querySelector('.smiley').innerText = smiley;
     if (isWin) updateScoreBoard();
+}
+
+function showRemainingMines() {
+    var remainingMinesLoc = getAllUnseenMinesLoc(gGame.board);
+    for (var i = 0; i < remainingMinesLoc.length; i++) {
+        var currMineLoc = remainingMinesLoc[i];
+        var currCell = gGame.board[currMineLoc.i][currMineLoc.j];
+        currCell.isShown = true;
+        document.querySelector(`.cell-${currMineLoc.i}-${currMineLoc.j}`).classList.add('shown');
+        renderCell(currMineLoc, MINE);
+    }
 }
 
 function updateScoreBoard() {

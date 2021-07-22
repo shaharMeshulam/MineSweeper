@@ -136,3 +136,14 @@ function isSafe(cell) {
 function getRandomIntInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
+
+function getAllUnseenMinesLoc(board) {
+  var unseenMinesLoc = []
+  for (var i = 0; i < board.length; i++) {
+    for (var j = 0; j < board.length; j++) {
+      var currCell = board[i][j];
+      if (currCell.isMine && !currCell.isShown) unseenMinesLoc.push({ i, j });
+    }
+  }
+  return unseenMinesLoc;
+}
