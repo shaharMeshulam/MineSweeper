@@ -196,6 +196,7 @@ function startGame() {
 
 function cellMarked(ev, cellI, cellJ) {
     ev.preventDefault();
+    if(gGame.markedCount === gLevel.MINES) return;
     var cellMarked = gGame.board[cellI][cellJ];
     if (!gGame.isOn || cellMarked.isShown) return;
     var loc = { i: cellI, j: cellJ };
