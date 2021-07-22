@@ -38,6 +38,7 @@ function initGame() {
     gGame.isOn = false;
     gGame.shownCount = 0;
     gGame.markedCount = 0;
+    gGame.minesStepdcount = 0;
     gGame.secsPassed = 0;
     gGame.isFirstMove = true;
     gGame.hints = 3;
@@ -170,7 +171,8 @@ function cellClicked(elCell, cellI, cellJ) {
     elCell.classList.add('shown');
     if (currCell.isMine) {
         gGame.lives--;
-        gGame.shownCount++;
+        //gGame.shownCount++;
+        gGame.minesStepdcount++;
         elCell.classList.add('mine');
         rederLives();
         renderCell(loc, MINE);
@@ -216,7 +218,8 @@ function cellMarked(ev, cellI, cellJ) {
 }
 
 function checkGameOver() {
-    if (gGame.shownCount + gGame.markedCount === gLevel.SIZE * gLevel.SIZE && gGame.lives !== 0) {
+    if (gGame.shownCount === gLevel.SIZE * gLevel.SIZE - gLevel.MINES &&
+        gGame.markedCount + gGame.minesStepdcount === gLevel.MINES && gGame.lives !== 0) {
         showGameOver(true);
     } else if (gGame.lives == 0) {
         showRemainingMines();

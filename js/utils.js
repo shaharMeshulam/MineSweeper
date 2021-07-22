@@ -36,6 +36,8 @@ function renderBoard(mat, selector) {
         className += ' mine';
       } else if (cell.minesAroundCount > 0 && cell.isShown) {
         content = getNumHtml(cell.minesAroundCount);
+      } else if (cell.isMarked) {
+        content = MARK;
       }
       strHTML += `\t<td class="${className}" onclick="cellClicked(this, ${i}, ${j})" oncontextmenu="cellMarked(event, ${i}, ${j})">${content}</td>\n`;
     }
