@@ -51,6 +51,7 @@ function initGame() {
     renderHints();
     renderBoard(gGame.board, '.board');
     updateScoreBoard();
+    document.querySelector('.undo').disabled = true;
     document.querySelector('.safe-click span').innerText = gGame.safeClicks;
     document.querySelector('.place-mines span').innerText = '';
     document.querySelector('.timer span').innerText = '00.000';
@@ -196,7 +197,6 @@ function startGame() {
 
 function cellMarked(ev, cellI, cellJ) {
     ev.preventDefault();
-    if (gGame.markedCount === gLevel.MINES) return;
     var cellMarked = gGame.board[cellI][cellJ];
     if (!gGame.isOn || cellMarked.isShown) return;
     var loc = { i: cellI, j: cellJ };
@@ -205,7 +205,7 @@ function cellMarked(ev, cellI, cellJ) {
         cellMarked.isMarked = false;
         gGame.markedCount--;
         renderCell(loc, EMPTY);
-    } else {
+    } else if(gGame.markedCount !== gLevel.MINES) {
         gGame.markedCount++;
         cellMarked.isMarked = true;
         renderCell(loc, MARK)
@@ -284,6 +284,8 @@ function addStepToUndo() {
         markedCount: gGame.markedCount,
         lives: gGame.lives
     });
+    if (gGame.undoSteps.length > 1) document.querySelector('.undo').disabled = false;
+    else document.querySelector('.undo').disabled = true;
 }
 
 function renderScoreBoard(scores) {
@@ -362,6 +364,7 @@ function onUndo() {
         gGame.board = JSON.parse(JSON.stringify(lastStep.board));
         rederLives();
         renderBoard(gGame.board, '.board');
+        if (gGame.undoSteps.length <= 1) document.querySelector('.undo').disabled = true;
     }
 }
 

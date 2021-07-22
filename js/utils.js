@@ -45,7 +45,7 @@ function renderBoard(mat, selector) {
   elContainer.innerHTML = strHTML;
 }
 
-function getNumHtml(num){
+function getNumHtml(num) {
   return `<span style="color: ${NUMS_COLOR_MAP[num]}">${num}</span>`;
 }
 
@@ -123,7 +123,7 @@ function getSafeCells(board) {
   var safeCellsLoc = [];
   for (var i = 0; i < board.length; i++) {
     for (var j = 0; j < board.length; j++) {
-      if(isSafe(board[i][j])) safeCellsLoc.push({i,j})
+      if (isSafe(board[i][j])) safeCellsLoc.push({ i, j })
     }
   }
   return safeCellsLoc;
