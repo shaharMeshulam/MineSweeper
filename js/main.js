@@ -118,6 +118,7 @@ function cellClicked(elCell, cellI, cellJ) {
     var currCell = gGame.board[cellI][cellJ];
     var loc = { i: cellI, j: cellJ };
     if (gPositionMines.isPositionMines) {
+        if(currCell.isMine) return;
         currCell.isMine = true;
         gPositionMines.minesLoc.push(loc);
         document.querySelector('.place-mines span').innerText = `(${gLevel.MINES - gPositionMines.minesLoc.length} left)`;
