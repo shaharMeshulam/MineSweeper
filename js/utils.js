@@ -1,5 +1,16 @@
 'use strict'
 
+const NUMS_COLOR_MAP = {
+  1: 'green',
+  2: 'yellow',
+  3: 'orange',
+  4: 'red',
+  5: 'aqua',
+  6: 'blue',
+  7: 'purple',
+  8: 'black'
+}
+
 function getMat(size) {
   var mat = [];
   for (var i = 0; i < size; i++) {
@@ -20,10 +31,11 @@ function renderBoard(mat, selector) {
       var className = `cell cell-${i}-${j}`;
       className += cell.isShown ? ' shown' : '';
       var content = '';
-      if (cell.isMine && cell.isShown) { //&& cell.isShown
+      if (cell.isMine && cell.isShown) {
         content = MINE;
-      } else if (cell.minesAroundCount > 0 && cell.isShown) { //&& cell.isShown
-        content = cell.minesAroundCount;
+        className += ' mine';
+      } else if (cell.minesAroundCount > 0 && cell.isShown) {
+        content = getNumHtml(cell.minesAroundCount);
       }
       strHTML += `\t<td class="${className}" onclick="cellClicked(this, ${i}, ${j})" oncontextmenu="cellMarked(event, ${i}, ${j})">${content}</td>\n`;
     }
@@ -31,6 +43,10 @@ function renderBoard(mat, selector) {
   }
   var elContainer = document.querySelector(selector);
   elContainer.innerHTML = strHTML;
+}
+
+function getNumHtml(num){
+  return `<span style="color: ${NUMS_COLOR_MAP[num]}">${num}</span>`;
 }
 
 // location such as: {i: 2, j: 7}
@@ -73,15 +89,6 @@ function getNeighborsHint(board, cellI, cellJ) {
     }
   }
   return neighbors;
-}
-
-function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
 }
 
 function getRandomEmptyCellLoc(board) {
