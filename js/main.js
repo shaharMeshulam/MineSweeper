@@ -296,6 +296,7 @@ function addStepToUndo() {
         board: JSON.parse(JSON.stringify(gGame.board)),
         shownCount: gGame.shownCount,
         markedCount: gGame.markedCount,
+        minesStepdcount: gGame.minesStepdcount,
         lives: gGame.lives
     });
     if (gGame.undoSteps.length > 1) document.querySelector('.undo').disabled = false;
@@ -375,6 +376,7 @@ function onUndo() {
         gGame.shownCount = lastStep.shownCount;
         gGame.markedCount = lastStep.markedCount;
         gGame.lives = lastStep.lives;
+        gGame.minesStepdcount = lastStep.minesStepdcount;
         gGame.board = JSON.parse(JSON.stringify(lastStep.board));
         rederLives();
         renderBoard(gGame.board, '.board');
