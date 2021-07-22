@@ -12,6 +12,7 @@ const MINE = '🎇';
 const MARK = '📍';
 const LIFE = '💖';
 const LIFE_USED = '💔';
+const LIVES = 3;
 const SMILEY_NORMAL = '😀';
 const SMILEY_SAD = '😭';
 const SMILEY_WIN = '😎';
@@ -30,6 +31,7 @@ function initGame() {
         clearInterval(gGame.timeIntervalId);
         gGame.timeIntervalId = null;
     }
+    gGame.lives = LIVES; // i define the lives here because if in easy level i do gGame.lives = 2 so there will be only 2 lives
     setGameLevel()
     gGame.board = getMat(gLevel.SIZE);
     gGame.isOn = false;
@@ -37,7 +39,6 @@ function initGame() {
     gGame.markedCount = 0;
     gGame.secsPassed = 0;
     gGame.isFirstMove = true;
-    gGame.lives = 3;
     gGame.hints = 3;
     gGame.hintMode = false;
     gGame.safeClicks = SAFE_CLICKS;
@@ -61,6 +62,7 @@ function setGameLevel() {
         case 'beginner':
             gLevel.SIZE = LEVEL_BEGINNER;
             gLevel.MINES = MINES_BEGINNER;
+            gGame.lives = 2;
             break;
         case 'medium':
             gLevel.SIZE = LEVEL_MEDIUM;
@@ -73,6 +75,7 @@ function setGameLevel() {
         default:
             gLevel.SIZE = LEVEL_BEGINNER;
             gLevel.MINES = MINES_BEGINNER;
+            gGame.lives = 2;
     }
 
 }
@@ -165,7 +168,7 @@ function cellClicked(elCell, cellI, cellJ) {
         elCell.classList.add('mine');
         rederLives();
         renderCell(loc, MINE);
-        if (gGame.lives === 0) showGameOver();
+        if (gGame.lives === 0) checkGameOver();
     } else if (currCell.minesAroundCount > 0) {
         gGame.shownCount++;
         renderCell(loc, getNumHtml(currCell.minesAroundCount));
@@ -207,8 +210,10 @@ function cellMarked(ev, cellI, cellJ) {
 }
 
 function checkGameOver() {
-    if (gGame.shownCount + gGame.markedCount === gLevel.SIZE * gLevel.SIZE) {
+    if (gGame.shownCount + gGame.markedCount === gLevel.SIZE * gLevel.SIZE && gGame.lives !== 0) {
         showGameOver(true);
+    } else if (gGame.lives == 0) {
+        showGameOver();
     }
 }
 
@@ -321,7 +326,7 @@ function unReveal() {
         var currLoc = gHintsCellLoc[i];
         var currElCell = document.querySelector(`.cell-${currLoc.i}-${currLoc.j}`);
         currElCell.classList.remove('shown');
-        if(currElCell.classList.contains('mine')) currElCell.classList.remove('mine');
+        if (currElCell.classList.contains('mine')) currElCell.classList.remove('mine');
         renderCell(gHintsCellLoc[i], EMPTY)
     }
     gHintsCellLoc = [];
@@ -392,7 +397,10 @@ function rederLives() {
     for (var i = 0; i < gGame.lives; i++) {
         str += LIFE;
     }
-    for (var i = 0; i < 3 - gGame.lives; i++) {
+    // fix for easy level
+    var lives = LIVES;
+    if (gLevel.SIZE === LEVEL_BEGINNER) lives = 2;
+    for (var i = 0; i < lives - gGame.lives; i++) {
         str += LIFE_USED;
     }
     document.querySelector('.lives span').innerText = str;
