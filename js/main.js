@@ -6,13 +6,15 @@ const LEVEL_EXPERT = 12;
 const MINES_BEGINNER = 2;
 const MINES_MEDIUM = 12;
 const MINES_EXPERT = 30;
+const LIVES_BEGINNER = 1;
+const LIVES_MEDIUM = 2;
+const LIVES_EXPERT = 3;
 
 const EMPTY = ' ';
 const MINE = '🎇';
 const MARK = '📍';
 const LIFE = '💖';
 const LIFE_USED = '💔';
-const LIVES = 3;
 const SMILEY_NORMAL = '😀';
 const SMILEY_SAD = '😭';
 const SMILEY_WIN = '😎';
@@ -31,7 +33,7 @@ function initGame() {
         clearInterval(gGame.timeIntervalId);
         gGame.timeIntervalId = null;
     }
-    gGame.lives = LIVES; // i define the lives here because if in easy level i do gGame.lives = 2 so there will be only 2 lives
+    // gGame.lives = LIVES; // i define the lives here because if in easy level i do gGame.lives = 1 and in medium level gGame.lives = 2 so there will be only 2 lives
     setGameLevel()
     gGame.board = getMat(gLevel.SIZE);
     gGame.isOn = false;
@@ -62,20 +64,22 @@ function setGameLevel() {
         case 'beginner':
             gLevel.SIZE = LEVEL_BEGINNER;
             gLevel.MINES = MINES_BEGINNER;
-            gGame.lives = 2;
+            gGame.lives = LIVES_BEGINNER;
             break;
         case 'medium':
             gLevel.SIZE = LEVEL_MEDIUM;
             gLevel.MINES = MINES_MEDIUM;
+            gGame.lives = LIVES_MEDIUM;
             break;
         case 'expert':
             gLevel.SIZE = LEVEL_EXPERT;
             gLevel.MINES = MINES_EXPERT;
+            gGame.lives = LIVES_EXPERT;
             break;
         default:
             gLevel.SIZE = LEVEL_BEGINNER;
             gLevel.MINES = MINES_BEGINNER;
-            gGame.lives = 2;
+            gGame.lives = LIVES_BEGINNER;
     }
 
 }
@@ -397,9 +401,13 @@ function rederLives() {
     for (var i = 0; i < gGame.lives; i++) {
         str += LIFE;
     }
-    // fix for easy level
-    var lives = LIVES;
-    if (gLevel.SIZE === LEVEL_BEGINNER) lives = 2;
+    // fix for easy and medium level
+    var lives = LIVES_EXPERT;
+    if (gLevel.SIZE === LEVEL_BEGINNER) {
+        lives = LIVES_BEGINNER;
+    } else if (gLevel.SIZE === LEVEL_MEDIUM) {
+        lives = LIVES_MEDIUM
+    }
     for (var i = 0; i < lives - gGame.lives; i++) {
         str += LIFE_USED;
     }
